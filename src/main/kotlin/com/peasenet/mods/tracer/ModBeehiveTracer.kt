@@ -19,6 +19,8 @@
  */
 package com.peasenet.mods.tracer
 
+import com.peasenet.main.Settings
+import com.peasenet.config.TracerConfig
 import com.peasenet.settings.SettingBuilder
 import com.peasenet.util.RenderUtils
 import com.peasenet.util.event.data.BlockEntityRender
@@ -38,9 +40,9 @@ class ModBeehiveTracer : TracerMod(
     init {
         val colorSetting = SettingBuilder()
             .setTitle("gavinsmod.settings.tracer.beehive.color")
-            .setColor(tracerConfig.beehiveColor)
+            .setColor(config.beehiveColor)
             .buildColorSetting()
-        colorSetting.setCallback { tracerConfig.beehiveColor = colorSetting.color }
+        colorSetting.setCallback { config.beehiveColor = colorSetting.color }
         addSetting(colorSetting)
     }
 
@@ -51,11 +53,17 @@ class ModBeehiveTracer : TracerMod(
             er.buffer!!,
             er.playerPos!!,
             er.center!!,
-            tracerConfig.beehiveColor,
-            tracerConfig.alpha
+            config.beehiveColor,
+            config.alpha
         )
     }
 
     override fun onEntityRender(er: EntityRender) {
+    }
+    companion object {
+        private val config: TracerConfig
+        get() {
+            return Settings.getConfig<TracerConfig>("tracer")
+        }
     }
 }
